@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Testing OJ API</title>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="style.css" type="text/css" />
+	</head>
+	<body>
+		<div id="root">
+			<fieldset id="container">
+				<legend>Select an online judge</legend>
+				<table>
+					<tbody>
+						<tr>
+							<td>Online judge</td>
+							<td>:</td>
+							<td>
+								<select id="selector">
+									<option selected="selected" disabled="disabled" hidden="hidden" value=""></option>
+									<option value="cf">Codeforces</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td>Problem tag</td>
+							<td>:</td>
+							<td>
+								<input id="p_tag" value="" type="text" maxlength="128" /> *comma separated
+							</td>
+						</tr>
+						<tr>
+							<td>&nbsp;</td>
+							<td>&nbsp;</td>
+							<td>
+								<input type="button" value="Search" id="search_btn" />
+							</td>
+						</tr>
+						<tr>
+							<td>Results:</td>
+							<td>:</td>
+							<td>
+								<div id="res_container"></div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
+			<script type="text/javascript" src="js/main.js"></script>
+			<script type="text/javascript" src="js/cf.js"></script>
+			<script id='jsonp' type="text/javascript"></script>
+			<!-- <script type="text/javascript" src="js/example.js"></script> -->
+		</div>
+	</body>
+</html>
