@@ -7,3 +7,7 @@ html, body{
 	margin: 0 auto;
 	width: 50%;
 }
+
+#container td{
+	vertical-align: top;
+}

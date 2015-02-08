@@ -15,27 +15,27 @@
 							<td>Online judge</td>
 							<td>:</td>
 							<td>
-								<select id="selector">
+								<select id="oj_selector">
 									<option selected="selected" disabled="disabled" hidden="hidden" value=""></option>
 									<option value="cf">Codeforces</option>
 								</select>
 							</td>
 						</tr>
-						<tr>
+						<tr id="p_tag_row">
 							<td>Problem tag</td>
 							<td>:</td>
 							<td>
 								<input id="p_tag" value="" type="text" maxlength="128" /> *comma separated
 							</td>
 						</tr>
-						<tr>
+						<tr id="search_btn_row">
 							<td>&nbsp;</td>
 							<td>&nbsp;</td>
 							<td>
 								<input type="button" value="Search" id="search_btn" />
 							</td>
 						</tr>
-						<tr>
+						<tr id="res_row">
 							<td>Results:</td>
 							<td>:</td>
 							<td>
@@ -45,9 +45,10 @@
 					</tbody>
 				</table>
 			</fieldset>
+			<script type="text/javascript" src="js/zipper.js"></script>
 			<script type="text/javascript" src="js/main.js"></script>
 			<script type="text/javascript" src="js/cf.js"></script>
-			<script id='jsonp' type="text/javascript"></script>
+			<div id="jsonp_container"></div>
 			<!-- <script type="text/javascript" src="js/example.js"></script> -->
 		</div>
 	</body>

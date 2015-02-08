@@ -1,83 +1,57 @@
 var
-	selector,
+	oj_selector,
 	p_tag,
+	p_tag_row,
 	search_btn,
-	res_container;
+	search_btn_row,
+	res_container,
+	res_row,
+	jsonp_container;
 
-function display(response){
-	alert(response.status);
-	
-	if(response.status == 'OK'){
-		var
-			list = document.createElement('ul');
-			p_list = response.result.problems,
-			p_stats = response.result.problemStatistics,
-			p_link = 'http://codeforces.com/problemset/problem/';
-		
-		for(var i = 0, size = p_list.length; i < size; ++i){
-			var
-				p = p_list[i],
-				a = document.createElement('a'),
-				li = document.createElement('li'),
-				span = document.createElement('span');
-			
-			a.href = p_link + p.contestId + '/' + p.index;
-			a.textContent = p.name;
-			a.target = '_blank';
-			
-			span.textContent = p_stats[i].solvedCount;
-			span.style.color = '#0f0';
-			
-			li.appendChild(a);
-			
-			li.innerHTML += ' (';
-			li.appendChild(span);
-			li.innerHTML += ')';
-			
-			list.appendChild(li);
-		}
-		
-		res_container.appendChild(list);
-	}
-}
-
-function clear(ele){
+function remove_children(ele){
 	var firstChild;
 	while(firstChild = ele.firstChild)
 		ele.removeChild(ele.firstChild);
 }
 
-function reset(){
-	p_tag.parentNode.parentNode.style.visibility = 'collapse';
-	search_btn.parentNode.parentNode.style.visibility = 'collapse';
-	res_container.parentNode.parentNode.style.visibility = 'collapse';
-	
-	p_tag.value = "";
-	clear(res_container);
-};
-
-function show(arr){
-	for(var key in arr){
-		arr[key].parentNode.parentNode.style.visibility = 'visible';
-	}
-};
-
 document.addEventListener('DOMContentLoaded', function (arg){
-	selector = document.getElementById('selector'),
 	p_tag = document.getElementById('p_tag'),
 	search_btn = document.getElementById('search_btn'),
+	oj_selector = document.getElementById('oj_selector'),
 	res_container = document.getElementById('res_container');
+	
+	res_row = document.getElementById('res_row');
+	p_tag_row = document.getElementById('p_tag_row');
+	search_btn_row = document.getElementById('search_btn_row');
+	
+	jsonp_container = document.getElementById('jsonp_container');
+	
+	function reset(){
+		p_tag_row.style.visibility
+				= search_btn_row.style.visibility
+				= res_row.style.visibility = 'collapse';
+		
+		p_tag.value = "";
+		remove_children(res_container);
+	};
+
+	// opposite of reset()
+	function show(arr){
+		for(var key in arr){
+			arr[key].style.visibility = 'visible';
+		}
+	};
 	
 	reset();
 	
-	selector[0].selected = true;
-	selector.onchange = function (){
+	oj_selector[0].selected = true;
+	oj_selector.onchange = function (){
 		reset();
 		switch(this.value){
 			case 'cf':
 				p_tag.value = 'dp,math,implementation';
-				show([p_tag, search_btn, res_container]);
-				new cf(p_tag, search_btn, res_container);
+				show([p_tag_row, search_btn_row, res_row]);
+				cf(p_tag, search_btn, res_container);
 				break;
 		}
 	};
