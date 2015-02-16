@@ -1,3 +1,3 @@
-## Testing API by OJs (STILL BUGGY)
+## Testing API by OJs
 
 [Demo](http://rawgit.com/pciang/testing-oj-api/master/index.html)
