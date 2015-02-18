@@ -118,7 +118,7 @@ function cf(p_tag, search_btn, res_container){
 		}
 		
 		jsonp.type = 'text/javascript';
-		jsonp.src = 'http://codeforces.com/api/problemset.problems?tags='
+		jsonp.src = window.location.protocol + '//codeforces.com/api/problemset.problems?tags='
 				+ tag_arr.join(';') + '&jsonp=cf_parse';
 	};
 }
