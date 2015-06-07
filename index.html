@@ -1,55 +1,101 @@
-<!DOCTYPE html>
 <html>
-	<head>
-		<title>Testing OJ API</title>
-		<meta charset="utf-8" />
-		<link rel="stylesheet" href="style.css" type="text/css" />
-	</head>
-	<body>
-		<div id="root">
-			<fieldset id="container">
-				<legend>Select an online judge</legend>
-				<table>
-					<tbody>
-						<tr>
-							<td>Online judge</td>
-							<td>:</td>
-							<td>
-								<select id="oj_selector">
-									<option selected="selected" disabled="disabled" hidden="hidden" value=""></option>
-									<option value="cf">Codeforces</option>
-								</select>
-							</td>
-						</tr>
-						<tr id="p_tag_row">
-							<td>Problem tag</td>
-							<td>:</td>
-							<td>
-								<input id="p_tag" value="" type="text" maxlength="128" /> *comma separated
-							</td>
-						</tr>
-						<tr id="search_btn_row">
-							<td>&nbsp;</td>
-							<td>&nbsp;</td>
-							<td>
-								<input type="button" value="Search" id="search_btn" />
-							</td>
-						</tr>
-						<tr id="res_row">
-							<td>Results:</td>
-							<td>:</td>
-							<td>
-								<div id="res_container"></div>
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</fieldset>
-			<script type="text/javascript" src="js/zipper.js"></script>
-			<script type="text/javascript" src="js/main.js"></script>
-			<script type="text/javascript" src="js/cf.js"></script>
-			<div id="jsonp_container"></div>
-			<!-- <script type="text/javascript" src="js/example.js"></script> -->
+<head>
+	<title>Codeforces Tool</title>
+	<meta charset="utf-8" />
+	<link rel="stylesheet" type="text/css" href="css/main.css" />
+	<script type="text/javascript" src="js/jquery-1.11.3.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</head>
+<body>
+	<div id="container-root">
+		<div id="recent_status-container">
+			<table id="recent_status-table">
+				<thead>
+					<tr>
+						<th colspan="11">
+							<span>Recent Status</span>
+							<a class="recent_status-count" data-recent-count="5">5</a>
+							<a class="recent_status-count" data-recent-count="10">10</a>
+							<a class="recent_status-count" data-recent-count="25">25</a>
+							<a class="recent_status-count" data-recent-count="50">50</a>
+						</th>
+					</tr>
+					<tr>
+						<th>Submission ID</th>
+						<th>Contest ID</th>
+						<th>#</th>
+						<th>Problem Name</th>
+						<th>Tags</th>
+						<th>Handle</th>
+						<th>Submission Date</th>
+						<th>Language</th>
+						<th>Verdict</th>
+						<th>Time (ms)</th>
+						<th>Memory (byte)</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
 		</div>
-	</body>
+		<div id="user_info-input">
+			<label>Your Codeforces handle: <input type="text" id="handle-field" /></label>
+			<button id="submit_handle-btn">Submit</button>
+		</div>
+		<div id="user_status-container">
+			<table id="user_status-table">
+				<thead>
+					<tr>
+						<th colspan="8">
+							<span id="handle-placeholder"></span>
+							<a class="user_status-count" data-user-status-count="5">5</a>
+							<a class="user_status-count" data-user-status-count="10">10</a>
+							<a class="user_status-count" data-user-status-count="25">25</a>
+							<a class="user_status-count" data-user-status-count="50">50</a>
+						</th>
+					</tr>
+					<tr>
+						<th>Submission ID</th>
+						<th>Submission Date</th>
+						<th>Handle</th>
+						<th>Problem</th>
+						<th>Language</th>
+						<th>Verdict</th>
+						<th>Time (ms)</th>
+						<th>Memory (byte)</th>
+					</tr>
+				</thead>
+				<tbody></tbody>
+			</table>
+		</div>
+		<div id="problem_search-container">
+			<div id="tag-list"></div>
+			<div id="tag-input">
+				<label>Search by tag(s): <input type="text" id="tag-field" /></label>
+				<button id="add_tag-btn">Add Tag</button>
+				<button id="submit_tag_list-btn">Submit</button>
+			</div>
+			<div id="search_result-container">
+				<table id="search_result-table">
+					<thead>
+						<tr>
+							<th colspan="5">
+								<span>Sort by: </span>
+								<a id="sort_by_alphanum-btn">A/Z</a>
+								<a id="sort_by_solvedcount-btn">Solved Count</a>
+							</th>
+						</tr>
+						<tr>
+							<th>Contest ID</th>
+							<th>#</th>
+							<th>Problem Name</th>
+							<th>Tags</th>
+							<th>Solved Count</th>
+						</tr>
+					</thead>
+					<tbody></tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+</body>
 </html>

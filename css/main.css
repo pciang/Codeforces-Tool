@@ -1,0 +1,60 @@
+#container-root #recent_status-container
+#recent_status-table,
+#container-root #user_status-container
+#user_status-table,
+#container-root #problem_search-container #search_result-container
+#search_result-table {
+	border: 1px solid #000;
+	border-spacing: 2px;
+	text-align: left;
+}
+
+#container-root #recent_status-container
+#recent_status-table thead tr th,
+#container-root #user_status-container
+#user_status-table thead tr th,
+#container-root #problem_search-container #search_result-container
+#search_result-table thead tr th {
+	background-color: #0ff;
+}
+
+#container-root #recent_status-container
+#recent_status-table thead tr th .recent_status-count,
+#container-root #user_status-container
+#user_status-table thead tr th .user_status-count,
+#sort_by_alphanum-btn, #sort_by_solvedcount-btn {
+	cursor: pointer;
+	color: #00f;
+}
+
+#container-root #recent_status-container
+#recent_status-table thead tr th .recent_status-count:before,
+#container-root #user_status-container
+#user_status-table thead tr th .user_status-count:before,
+#sort_by_solvedcount-btn:before {
+	content: " | ";
+	cursor: default;
+	color: #000;
+	text-decoration: none;
+}
+
+.tag {
+	display: inline-block;
+	margin: 2px;
+	color: #000;
+	text-decoration: none;
+	cursor: pointer;
+	background-color: #ccc;
+}
+
+.tag:hover {
+	background-color: #ddd;
+}
+
+.tag:after {
+	content: " (\2A2F)";
+}
+
+.tag:active {
+	background-color: #bbb;
+}
