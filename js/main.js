@@ -200,7 +200,13 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Language
 					el_row.insertCell(-1).textContent = entry.programmingLanguage;
 					// Verdict
-					el_row.insertCell(-1).textContent = entry.verdict;
+					el_col = el_row.insertCell(-1);
+					var el_verdict = document.createElement("span");
+					el_verdict.classList.add("verdict");
+					el_verdict.classList.add(entry.verdict);
+					el_verdict.textContent = entry.verdict.split("_").join(" ");
+					el_col.appendChild(el_verdict);
+					
 					// Time (ms)
 					el_row.insertCell(-1).textContent = entry.timeConsumedMillis;
 					// Memory (byte)
@@ -270,7 +276,12 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Language
 					el_row.insertCell(-1).textContent = entry.programmingLanguage;
 					// Verdict
-					el_row.insertCell(-1).textContent = entry.verdict;
+					el_col = el_row.insertCell(-1);
+					var el_verdict = document.createElement("span");
+					el_verdict.classList.add("verdict");
+					el_verdict.classList.add(entry.verdict);
+					el_verdict.textContent = entry.verdict.split("_").join(" ");
+					el_col.appendChild(el_verdict);
 					// Time (ms)
 					el_row.insertCell(-1).textContent = entry.timeConsumedMillis;
 					// Memory (byte)

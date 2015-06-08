@@ -19,8 +19,7 @@ main {
 	margin: 0 auto;
 }
 .table {
-	border: 1px solid #000;
-	border-spacing: 2px;
+	border: 1px solid #111;
 	text-align: left;
 	width: 100%;
 }
@@ -30,11 +29,11 @@ input[type="text"] {
 a {
 	color: #0074D9;
 }
-a:active, a:hover {
-	color: #39CCCC;
-}
 a:visited {
 	color: #001f3f;
+}
+a:active, a:hover {
+	color: #39CCCC;
 }
 .table > thead tr th {
 	background-color: #7FDBFF;
@@ -51,6 +50,18 @@ a:visited {
 	color: #000;
 	text-decoration: none;
 }
+.verdict {
+	text-transform: lowercase;
+	white-space: nowrap;
+	font-weight: bold;
+}
+.verdict.OK { color: #2ECC40 ;}
+.verdict.WRONG_ANSWER { color: #FF4136 ;}
+.verdict.TESTING { color: #AAAAAA ;}
+.verdict.COMPILATION_ERROR { color: #FFDC00 ;}
+.verdict.RUNTIME_ERROR { color: #39CCCC ;}
+.verdict.TIME_LIMIT_EXCEEDED { color: #B10DC9 ;}
+.verdict.MEMORY_LIMIT_EXCEEDED { color: #B10DC9 ;}
 
 .tag {
 	display: inline-block;
@@ -61,6 +72,7 @@ a:visited {
 	background-color: #888;
 	padding: 0px 5px;
 	font-size: .9em;
+	white-space: nowrap;
 }
 #tag-list .tag,
 #all_tag_list-container .tag {
