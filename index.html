@@ -1,103 +1,109 @@
 <html>
 <head>
-	<title>Codeforces Tool</title>
-	<meta charset="utf-8" />
-	<link rel="stylesheet" type="text/css" href="css/main.css" />
-	<script type="text/javascript" src="js/main.js"></script>
+    <meta charset="utf-8" />
+    <title>Codeforces Tool</title>
+    <link rel="stylesheet" type="text/css" href="css/main.css" />
 </head>
 <body>
-	<div id="container-root">
-		<div id="recent_status-container">
-			<table id="recent_status-table">
-				<thead>
-					<tr>
-						<th colspan="11">
-							<span>Recent Status</span>
-							<a class="recent_status-count" data-recent-count="5">5</a>
-							<a class="recent_status-count" data-recent-count="10">10</a>
-							<a class="recent_status-count" data-recent-count="25">25</a>
-							<a class="recent_status-count" data-recent-count="50">50</a>
-						</th>
-					</tr>
-					<tr>
-						<th>Submission ID</th>
-						<th>Contest ID</th>
-						<th>#</th>
-						<th>Problem Name</th>
-						<th>Tags</th>
-						<th>Handle</th>
-						<th>Submission Date</th>
-						<th>Language</th>
-						<th>Verdict</th>
-						<th>Time (ms)</th>
-						<th>Memory (byte)</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-		<div id="user_info-input">
-			<label>Your Codeforces handle: <input type="text" id="handle-field" /></label>
-			<button id="submit_handle-btn">Submit</button>
-		</div>
-		<div id="user_status-container">
-			<table id="user_status-table">
-				<thead>
-					<tr>
-						<th colspan="10">
-							<span id="handle-placeholder"></span>
-							<a class="user_status-count" data-user-status-count="5">5</a>
-							<a class="user_status-count" data-user-status-count="10">10</a>
-							<a class="user_status-count" data-user-status-count="25">25</a>
-							<a class="user_status-count" data-user-status-count="50">50</a>
-						</th>
-					</tr>
-					<tr>
-						<th>Submission ID</th>
-						<th>Contest ID</th>
-						<th>#</th>
-						<th>Problem</th>
-						<th>Handle</th>
-						<th>Submission Date</th>
-						<th>Language</th>
-						<th>Verdict</th>
-						<th>Time (ms)</th>
-						<th>Memory (byte)</th>
-					</tr>
-				</thead>
-				<tbody></tbody>
-			</table>
-		</div>
-		<div id="problem_search-container">
-			<div id="tag-list"><span>Search by tag(s): </span></div>
-			<div id="tag-input">
-				<label>Tag: <input type="text" id="tag-field" /></label>
-				<button id="add_tag-btn">Add</button>
-				<button id="submit_tag_list-btn">Submit</button>
-			</div>
-			<div id="all_tag_list-container"><span>Available tags: </span></div>
-			<div id="search_result-container">
-				<table id="search_result-table">
-					<thead>
-						<tr>
-							<th colspan="5">
-								<span>Sort by: </span>
-								<a id="sort_by_alphanum-btn">A/Z</a>
-								<a id="sort_by_solvedcount-btn">Solved Count</a>
-							</th>
-						</tr>
-						<tr>
-							<th>Contest ID</th>
-							<th>#</th>
-							<th>Problem Name</th>
-							<th>Tags</th>
-							<th>Solved Count</th>
-						</tr>
-					</thead>
-					<tbody></tbody>
-				</table>
-			</div>
-		</div>
-	</div>
+    <header>
+        Codeforces Tools
+    </header>
+    <main>
+        <div id="recent_status-container">
+            <table id="recent_status-table" class="table">
+                <thead>
+                    <tr>
+                        <th colspan="11">
+                            <span>Recent Status</span>
+                            <a class="clickable recent_status-count" data-recent-count="5">5</a>
+                            <a class="clickable recent_status-count" data-recent-count="10">10</a>
+                            <a class="clickable recent_status-count" data-recent-count="25">25</a>
+                            <a class="clickable recent_status-count" data-recent-count="50">50</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Submission ID</th>
+                        <th>Contest ID</th>
+                        <th>#</th>
+                        <th>Problem Name</th>
+                        <th>Tags</th>
+                        <th>Handle</th>
+                        <th>Submission Date</th>
+                        <th>Language</th>
+                        <th>Verdict</th>
+                        <th>Time (ms)</th>
+                        <th>Memory (byte)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="user_info-input">
+            <label>Codeforces handle: <input type="text" id="handle-field" placeholder="Codeforces handle" /></label>
+            <button id="submit_handle-btn">Submit</button>
+        </div>
+        <div id="user_status-container">
+            <table id="user_status-table" class="table">
+                <thead>
+                    <tr>
+                        <th colspan="10">
+                            <span id="handle-placeholder"></span>
+                            <a class="clickable user_status-count" data-user-status-count="5">5</a>
+                            <a class="clickable user_status-count" data-user-status-count="10">10</a>
+                            <a class="clickable user_status-count" data-user-status-count="25">25</a>
+                            <a class="clickable user_status-count" data-user-status-count="50">50</a>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>Submission ID</th>
+                        <th>Contest ID</th>
+                        <th>#</th>
+                        <th>Problem</th>
+                        <th>Handle</th>
+                        <th>Submission Date</th>
+                        <th>Language</th>
+                        <th>Verdict</th>
+                        <th>Time (ms)</th>
+                        <th>Memory (byte)</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+        <div id="problem_search-container">
+            <div id="tag-list"><span>Search by tag(s): </span></div>
+            <div id="tag-input">
+                <label>Tag: <input type="text" id="tag-field" /></label>
+                <button id="add_tag-btn">Add</button>
+                <button id="submit_tag_list-btn">Submit</button>
+            </div>
+            <div id="all_tag_list-container"><span>Available tags: </span></div>
+            <div id="search_result-container">
+                <table id="search_result-table" class="table">
+                    <thead>
+                        <tr>
+                            <th colspan="5">
+                                <span>Sort by: </span>
+                                <a id="sort_by_alphanum-btn" class="clickable">A/Z</a>
+                                <a id="sort_by_solvedcount-btn" class="clickable">Solved Count</a>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>Contest ID</th>
+                            <th>#</th>
+                            <th>Problem Name</th>
+                            <th>Tags</th>
+                            <th>Solved Count</th>
+                        </tr>
+                    </thead>
+                    <tbody></tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+    <footer>
+        &copy; 2015 &middot; pc1ang
+    </footer>
+    <script type="text/javascript" src="js/main.js"></script>
 </body>
 </html>

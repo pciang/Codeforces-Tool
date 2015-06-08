@@ -182,7 +182,12 @@ document.addEventListener("DOMContentLoaded", function () {
 					}
 					// Tags
 					el_col = el_row.insertCell(-1);
-					el_col.textContent = entry.problem.tags.join(', ');
+					entry.problem.tags.forEach(function (tag) {
+						var el_tag = document.createElement("span");
+						el_tag.classList.add("tag");
+						el_tag.textContent = tag;
+						el_col.appendChild(el_tag);
+					});
 					// Handle(s?)
 					el_col = el_row.insertCell(-1);
 					for(var j = 0, size2 = entry.author.members.length; j < size2; ++j) {
@@ -195,7 +200,13 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Language
 					el_row.insertCell(-1).textContent = entry.programmingLanguage;
 					// Verdict
-					el_row.insertCell(-1).textContent = entry.verdict;
+					el_col = el_row.insertCell(-1);
+					var el_verdict = document.createElement("span");
+					el_verdict.classList.add("verdict");
+					el_verdict.classList.add(entry.verdict);
+					el_verdict.textContent = entry.verdict.split("_").join(" ");
+					el_col.appendChild(el_verdict);
+					
 					// Time (ms)
 					el_row.insertCell(-1).textContent = entry.timeConsumedMillis;
 					// Memory (byte)
@@ -265,7 +276,12 @@ document.addEventListener("DOMContentLoaded", function () {
 					// Language
 					el_row.insertCell(-1).textContent = entry.programmingLanguage;
 					// Verdict
-					el_row.insertCell(-1).textContent = entry.verdict;
+					el_col = el_row.insertCell(-1);
+					var el_verdict = document.createElement("span");
+					el_verdict.classList.add("verdict");
+					el_verdict.classList.add(entry.verdict);
+					el_verdict.textContent = entry.verdict.split("_").join(" ");
+					el_col.appendChild(el_verdict);
 					// Time (ms)
 					el_row.insertCell(-1).textContent = entry.timeConsumedMillis;
 					// Memory (byte)
@@ -365,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function () {
 			if(tag != "" && tagList.indexOf(tag) == -1) {
 				tagList.push(tag);
 
-				var el = document.createElement('a');
+				var el = document.createElement('span');
 				el.classList.add('tag');
 				el.textContent = tag;
 
@@ -420,7 +436,13 @@ document.addEventListener("DOMContentLoaded", function () {
 				else
 					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '/problem/' + problem.index + '">' + problem.name + '</a>';						
 				// Tags
-				el_row.insertCell(-1).textContent = problem.tags.join(", ");
+				el_col = el_row.insertCell(-1);
+				problem.tags.forEach(function (tag) {
+					var el_tag = document.createElement("span");
+					el_tag.classList.add("tag");
+					el_tag.textContent = tag;
+					el_col.appendChild(el_tag);
+				});
 				// Solved Count
 				el_row.insertCell(-1).textContent = problem.solvedCount;
 			}
@@ -487,7 +509,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 
 		TAGS.list.forEach(function (tag) {
-			var el = document.createElement("a");
+			var el = document.createElement("span");
 
 			el.textContent = tag;
 			el.classList.add('tag');
