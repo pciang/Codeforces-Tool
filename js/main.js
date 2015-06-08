@@ -126,6 +126,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		var tagList = [];
 		var tagField = document.getElementById("tag-field");
 		var tagListDom = document.getElementById("tag-list");
+
+		var TAGS = {
+			dom: document.getElementById("all_tag_list-container"),
+			list: ["constructive algorithms","greedy","implementation","graphs","brute force","dp","math","bitmasks","strings","binary search","sortings","divide and conquer","games","data structures","string suffix structures","dfs and similar","number theory","dsu","flows","shortest paths","trees","hashing","probabilities","2-sat","geometry","meet-in-the-middle","two pointers","fft","combinatorics","ternary search","matrices","graph matchings","schedules","chinese remainder theorem","expression parsing"]
+		};
 		
 		function deleteAllRows(el_table) { // works on <tbody> in Firefox!
 			while(el_table.rows.length > 0) el_table.deleteRow(-1);
@@ -441,6 +446,11 @@ document.addEventListener("DOMContentLoaded", function () {
 		};
 
 		function submitTagList() {
+			if(tagList.length == 0
+				&& !confirm("Warning, you are about to load around 700+kB of data! Would you like to proceeed?\n\nNote: There are some problems without any tag.")) {
+				return;
+			}
+
 			PROBLEM_SEARCH.reset();
 			PROBLEM_SEARCH.status = 200;
 
@@ -474,6 +484,16 @@ document.addEventListener("DOMContentLoaded", function () {
 		document.getElementById("sort_by_solvedcount-btn").addEventListener('click', function (event) {
 			PROBLEM_SEARCH.searchResult.sort(compareBySolvedCount);
 			displayProblemList();
+		});
+
+		TAGS.list.forEach(function (tag) {
+			var el = document.createElement("a");
+
+			el.textContent = tag;
+			el.classList.add('tag');
+			el.addEventListener('click', addTag.bind(undefined, tag));
+
+			TAGS.dom.appendChild(el);
 		});
 
 		return self;

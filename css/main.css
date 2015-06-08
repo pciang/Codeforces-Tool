@@ -38,7 +38,8 @@
 	text-decoration: none;
 }
 
-.tag {
+#tag-list .tag,
+#all_tag_list-container .tag {
 	display: inline-block;
 	margin: 2px;
 	color: #000;
@@ -47,14 +48,20 @@
 	background-color: #ccc;
 }
 
-.tag:hover {
+#tag-list .tag:hover,
+#all_tag_list-container .tag:hover {
 	background-color: #ddd;
 }
 
-.tag:after {
+#tag-list .tag:active,
+#all_tag_list-container .tag:active {
+	background-color: #bbb;
+}
+
+#tag-list .tag:after {
 	content: " (\2A2F)";
 }
 
-.tag:active {
-	background-color: #bbb;
+#all_tag_list-container .tag:after {
+	content: " (+)";
 }
