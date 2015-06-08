@@ -1,61 +1,81 @@
-#container-root #recent_status-container
-#recent_status-table,
-#container-root #user_status-container
-#user_status-table,
-#container-root #problem_search-container #search_result-container
-#search_result-table {
+* {
+	margin: 0;
+	padding: 0;
+}
+body {
+	font-family: sans-serif;
+}
+header {
+	font-size: 2.5em;
+	text-align: center;
+}
+footer {
+	color: #aaa;
+	text-align: center;
+}
+main {
+	width: 100%;
+	max-width: 960px;
+	margin: 0 auto;
+}
+.table {
 	border: 1px solid #000;
 	border-spacing: 2px;
 	text-align: left;
+	width: 100%;
+}
+input[type="text"] {
+	padding: 2px 5px;
+}
+a {
+	color: #0074D9;
+}
+a:active, a:hover {
+	color: #39CCCC;
+}
+a:visited {
+	color: #001f3f;
+}
+.table > thead tr th {
+	background-color: #7FDBFF;
 }
 
-#container-root #recent_status-container
-#recent_status-table thead tr th,
-#container-root #user_status-container
-#user_status-table thead tr th,
-#container-root #problem_search-container #search_result-container
-#search_result-table thead tr th {
-	background-color: #0ff;
-}
-
-#container-root #recent_status-container
-#recent_status-table thead tr th .recent_status-count,
-#container-root #user_status-container
-#user_status-table thead tr th .user_status-count,
-#sort_by_alphanum-btn, #sort_by_solvedcount-btn {
+.table > thead tr th a.clickable {
 	cursor: pointer;
-	color: #00f;
+	color: #0074D9;
 }
 
-#container-root #recent_status-container
-#recent_status-table thead tr th .recent_status-count:before,
-#container-root #user_status-container
-#user_status-table thead tr th .user_status-count:before,
-#sort_by_solvedcount-btn:before {
+.table > thead tr th a.clickable:before {
 	content: " | ";
 	cursor: default;
 	color: #000;
 	text-decoration: none;
 }
 
-#tag-list .tag,
-#all_tag_list-container .tag {
+.tag {
 	display: inline-block;
 	margin: 2px;
-	color: #000;
+	color: #fff;
 	text-decoration: none;
+	border-radius: 3px;
+	background-color: #888;
+	padding: 0px 5px;
+	font-size: .9em;
+}
+#tag-list .tag,
+#all_tag_list-container .tag {
 	cursor: pointer;
-	background-color: #ccc;
 }
 
 #tag-list .tag:hover,
 #all_tag_list-container .tag:hover {
-	background-color: #ddd;
+	background-color: #aaa;
 }
 
 #tag-list .tag:active,
-#all_tag_list-container .tag:active {
-	background-color: #bbb;
+#all_tag_list-container .tag:active,
+.tag.active {
+	background-color: #aaa;
 }
 
 #tag-list .tag:after {
