@@ -229,14 +229,17 @@ document.addEventListener("DOMContentLoaded", function () {
 						el_col;
 					// Submission ID
 					el_row.insertCell(-1).textContent = entry.id;
-					// Submission Date
-					el_row.insertCell(-1).textContent = formatDate(new Date(entry.creationTimeSeconds * 1000));
-					// Handle
-					el_col = el_row.insertCell(-1);
-					for(var j = 0, size2 = entry.author.members.length; j < size2; ++j) {
-						if(j > 0) el_col.innerHTML += ', ';
-						var member = entry.author.members[j];
-						el_col.innerHTML += '<a target="_blank" href="http://codeforces.com/profile/' + member.handle + '">' + member.handle + '</a>';
+					// Contest ID
+					if(entry.contestId < 100000) {
+						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/problemset/problem/' + entry.problem.contestId + '">' + entry.problem.contestId + '</a>';
+					} else {
+						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + entry.problem.contestId + '">' + entry.problem.contestId + '</a>';
+					}
+					// #
+					if(entry.contestId < 100000) {
+						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/problemset/problem/' + entry.problem.contestId + '/' + entry.problem.index + '">' + entry.problem.index + '</a>';
+					} else {
+						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + entry.problem.contestId + '/problem/' + entry.problem.index + '">' + entry.problem.index + '</a>';
 					}
 					// Problem
 					if(entry.contestId < 100000) {
@@ -244,6 +247,15 @@ document.addEventListener("DOMContentLoaded", function () {
 					} else {
 						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + entry.problem.contestId + '/problem/' + entry.problem.index + '">' + entry.problem.name + '</a>';
 					}
+					// Handle
+					el_col = el_row.insertCell(-1);
+					for(var j = 0, size2 = entry.author.members.length; j < size2; ++j) {
+						if(j > 0) el_col.innerHTML += ', ';
+						var member = entry.author.members[j];
+						el_col.innerHTML += '<a target="_blank" href="http://codeforces.com/profile/' + member.handle + '">' + member.handle + '</a>';
+					}
+					// Submission Date
+					el_row.insertCell(-1).textContent = formatDate(new Date(entry.creationTimeSeconds * 1000));
 					// Language
 					el_row.insertCell(-1).textContent = entry.programmingLanguage;
 					// Verdict
@@ -276,10 +288,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				&& response.status == "OK") {
 				user = response.result[0]; // expect only 1 result, no more no less
 				
-				USER_STATUS.reset();
-
 				listenToUserStatus();
-				USER_INFO.intervalId = setInterval(listenToUserStatus, USER_STATUS.interval);
+				USER_STATUS.intervalId = setInterval(listenToUserStatus, USER_STATUS.interval);
 				USER_STATUS.show();
 			}
 		};
@@ -287,6 +297,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		function loadUserInfo() {
 			if(settings._handle) { // non-empty string or not null
 				USER_INFO.reset();
+				USER_STATUS.reset();
 
 				USER_INFO.status = 200;
 

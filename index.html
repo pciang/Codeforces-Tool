@@ -44,7 +44,7 @@
 			<table id="user_status-table">
 				<thead>
 					<tr>
-						<th colspan="8">
+						<th colspan="10">
 							<span id="handle-placeholder"></span>
 							<a class="user_status-count" data-user-status-count="5">5</a>
 							<a class="user_status-count" data-user-status-count="10">10</a>
@@ -54,9 +54,11 @@
 					</tr>
 					<tr>
 						<th>Submission ID</th>
-						<th>Submission Date</th>
-						<th>Handle</th>
+						<th>Contest ID</th>
+						<th>#</th>
 						<th>Problem</th>
+						<th>Handle</th>
+						<th>Submission Date</th>
 						<th>Language</th>
 						<th>Verdict</th>
 						<th>Time (ms)</th>
@@ -73,6 +75,7 @@
 				<button id="add_tag-btn">Add Tag</button>
 				<button id="submit_tag_list-btn">Submit</button>
 			</div>
+			<div id="available_tag_list-container"></div>
 			<div id="search_result-container">
 				<table id="search_result-table">
 					<thead>
