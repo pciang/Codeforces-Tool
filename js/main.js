@@ -119,7 +119,8 @@ document.addEventListener("DOMContentLoaded", function () {
 					this.timeoutId = null;
 				}
 			},
-			dom: document.querySelector("#search_result-table tbody")
+			dom: document.querySelector("#search_result-table tbody"),
+			searchResult: []
 		};
 
 		var tagList = [];
@@ -388,49 +389,54 @@ document.addEventListener("DOMContentLoaded", function () {
 			tagField.select();
 		});
 
+		function displayProblemList() {
+			deleteAllRows(PROBLEM_SEARCH.dom);
+			var problemList = PROBLEM_SEARCH.searchResult;
 
-		function compareProblem(a, b) {
-			if(a.contestId < b.contestId) return -1;
-			else if(a.contestId > b.contestId) return 1;
-			else if(a.contestId == b.contestId && a.index < b.index) return -1;
-			else return 1;
+			for(var i = 0, size = problemList.length; i < size; ++i) {
+				var problem = problemList[i];
+
+				var el_row = PROBLEM_SEARCH.dom.insertRow(-1),
+					el_col;
+
+				// Contest ID
+				if(problem.contestId < 100000)
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '">' + problem.contestId + '</a>';
+				else
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '">' + problem.contestId + '</a>';
+				// #
+				if(problem.contestId < 100000)
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '/problem/' + problem.index +'">' + problem.index + '</a>';
+				else
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '/problem/' + problem.index + '">' + problem.index + '</a>';
+				// Problem Name
+				if(problem.contestId < 100000)
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '/problem/' + problem.index +'">' + problem.name + '</a>';
+				else
+					el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '/problem/' + problem.index + '">' + problem.name + '</a>';						
+				// Tags
+				el_row.insertCell(-1).textContent = problem.tags.join(", ");
+				// Solved Count
+				el_row.insertCell(-1).textContent = problem.solvedCount;
+			}
 		}
 
 		self.fetchProblemSearch = function (response) {
 			if(PROBLEM_SEARCH.status == 200
 				&& response.status == "OK") {
-				deleteAllRows(PROBLEM_SEARCH.dom);
 				
-				// For safety, perhaps not necessary?
-				// response.result.problems.sort(compareProblem);
-				// response.result.problemStatistics.sort(compareProblem);
+				var problemList = PROBLEM_SEARCH.searchResult = [];
 				for(var i = 0, size = response.result.problems.length; i < size; ++i) {
 					var problem = response.result.problems[i];
 					var statistic = response.result.problemStatistics[i];
 
-					var el_row = PROBLEM_SEARCH.dom.insertRow(-1),
-						el_col;
+					var problemWithStat = JSON.parse(JSON.stringify(problem));
+					problemWithStat.solvedCount = statistic.solvedCount;
 
-					// Contest ID
-					if(problem.contestId < 100000)
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '">' + problem.contestId + '</a>';
-					else
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '">' + problem.contestId + '</a>';
-					// #
-					if(problem.contestId < 100000)
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '/problem/' + problem.index +'">' + problem.index + '</a>';
-					else
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '/problem/' + problem.index + '">' + problem.index + '</a>';
-					// Problem Name
-					if(problem.contestId < 100000)
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/contest/' + problem.contestId + '/problem/' + problem.index +'">' + problem.name + '</a>';
-					else
-						el_row.insertCell(-1).innerHTML = '<a target="_blank" href="http://codeforces.com/gym/' + problem.contestId + '/problem/' + problem.index + '">' + problem.name + '</a>';						
-					// Tags
-					el_row.insertCell(-1).textContent = problem.tags.join(", ");
-					// Solved Count
-					el_row.insertCell(-1).textContent = statistic.solvedCount;
+					problemList.push(problemWithStat);
 				}
+
+				displayProblemList();
 			}
 		};
 
@@ -451,6 +457,24 @@ document.addEventListener("DOMContentLoaded", function () {
 		}
 
 		document.getElementById("submit_tag_list-btn").addEventListener('click', submitTagList);
+
+		function compareBySolvedCount(a, b) {
+			return b.solvedCount - a.solvedCount;
+		}
+
+		function compareByAlphanum(a, b) {
+			return a.name <= b.name ? -1 : 1;
+		}
+
+		document.getElementById("sort_by_alphanum-btn").addEventListener('click', function (event) {
+			PROBLEM_SEARCH.searchResult.sort(compareByAlphanum);
+			displayProblemList();
+		});
+
+		document.getElementById("sort_by_solvedcount-btn").addEventListener('click', function (event) {
+			PROBLEM_SEARCH.searchResult.sort(compareBySolvedCount);
+			displayProblemList();
+		});
 
 		return self;
 	}());
