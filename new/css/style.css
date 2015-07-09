@@ -1,0 +1,71 @@
+.col-collapsed > [class*="col-"] {
+	padding-left: 0;
+	padding-right: 0;
+}
+
+.min-width-1024 {
+	min-width: 1024px;
+}
+
+.min-width-1280 {
+	min-width: 1280px;
+}
+
+main {
+	max-width: 1280px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.tag {
+	cursor: pointer;
+	display: inline-block;
+	background-color: #ccc;
+	margin: 2px;
+	border-radius: 3px;
+	white-space: nowrap;
+	padding-left: 5px;
+	padding-right: 5px;
+}
+
+.tag:active, .handle:active, .icon:active {
+	background-color: #ddd !important;
+}
+
+.handle {
+	display: inline-block;
+	/* margin: 2px; */
+	padding-left: 5px;
+	padding-right: 5px;
+	border-radius: 3px;
+}
+
+.handle:hover, .tag:hover, .icon:hover {
+	background-color: #ccc;
+	text-decoration: none;
+}
+
+.tag:focus, .handle:focus, .icon:focus {
+	text-decoration: none;
+}
+
+.no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+a:hover {
+	cursor: pointer;
+}
+
+.icon {
+	padding: 3px;
+	border-radius: 3px;
+	display: inline-block;
+	background-color: #ccc;
+}

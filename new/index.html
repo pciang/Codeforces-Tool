@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1" />
+	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+	<title>Codeforces Tools</title>
+
+	<!-- Bootstrap -->
+	<link href="css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+	<link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body>
+	<main class="small">
+		<table class="table table-condensed table-striped table-hover min-width-1280">
+			<thead>
+				<tr>
+					<td colspan="12">Recent Status: <a data-show-recent="5">5</a> | <a data-show-recent="10">10</a> | <a data-show-recent="25">25</a> | <a data-show-recent="50">50</a></td>
+				</tr>
+			</thead>
+			<tbody id="recent-container">
+				<tr>
+					<td>Submission ID</td>
+					<td>Contest ID</td>
+					<td>#</td>
+					<td>Problem Name</td>
+					<td>Tags</td>
+					<td>Handle</td>
+					<td>Submission Date</td>
+					<td>Language</td>
+					<td>Verdict</td>
+					<td>Time (ms)</td>
+					<td>Memory (byte)</td>
+				</tr>
+				<tr data-recent-entry="0">
+					<td data-col="submission-id">12345678</td>
+					<td data-col="contest-id"><a target="_blank">123</a></td>
+					<td data-col="problem-index"><a target="_blank">A</a></td>
+					<td data-col="problem-name"><a target="_blank">Manusia Ganteng</a></td>
+					<td data-col="problem-tags"></td>
+					<td data-col="handle"></td>
+					<td data-col="submission-date">2015-07-01 12:01:01</td>
+					<td data-col="language">C++</td>
+					<td data-col="verdict">Accepted</td>
+					<td data-col="time-ms">0</td>
+					<td data-col="memory-byte">0</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="container-fluid">
+			<div class="row col-collapsed">
+				<div class="col-xs-12">
+					<label for="handle-field">Codeforces handle: </label>
+					<input type="text" placeholder="Codeforces handle" id="handle-field" maxlength="24" />
+					<button id="handle-submit">Submit</button>
+				</div>
+			</div>
+		</div>
+		<table class="table table-condensed table-striped table-hover min-width-1280">
+			<thead>
+				<tr>
+					<td colspan="10">Show: <a data-show-status="5">5</a> | <a data-show-status="10">10</a> | <a data-show-status="25">25</a> | <a data-show-status="50">50</a></td>
+				</tr>
+			</thead>
+			<tbody id="status-container">
+				<tr>
+					<td>Submission ID</td>
+					<td>Contest ID</td>
+					<td>#</td>
+					<td>Problem Name</td>
+					<td>Handle</td>
+					<td>Submission Date</td>
+					<td>Language</td>
+					<td>Verdict</td>
+					<td>Time (ms)</td>
+					<td>Memory (byte)</td>
+				</tr>
+				<tr data-status-entry="0">
+					<td data-col="submission-id">12345678</td>
+					<td data-col="contest-id"><a target="_blank">123</a></td>
+					<td data-col="problem-index"><a target="_blank">A</a></td>
+					<td data-col="problem-name"><a target="_blank">Manusia Ganteng</a></td>
+					<td data-col="handle"></td>
+					<td data-col="submission-date">2015-07-01 12:01:01</td>
+					<td data-col="language">C++</td>
+					<td data-col="verdict">Accepted</td>
+					<td data-col="time-ms">0</td>
+					<td data-col="memory-byte">0</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="container-fluid min-width-1280">
+			<div class="row col-collapsed">
+				<div class="col-xs-12" id="selected-tags">
+					<span>Search by tag(s): </span>
+				</div>
+			</div>
+			<div class="row col-collapsed">
+				<div class="col-xs-12">
+					<label for="tag-field">Tags: </label>
+					<input type="text" id="tag-field" maxlength="16" />
+					<button id="add-tag-btn">Add</button>
+					<button id="search-problem-btn">Submit</button>
+				</div>
+			</div>
+			<div class="row col-collapsed">
+				<div id="available-tags" class="col-xs-12">
+					<span>Available tags: </span>
+				</div>
+			</div>
+		</div>
+		<table class="table table-striped table-condensed table-hover min-width-1280">
+			<tbody id="search-result">
+				<tr>
+					<td>Contest ID</td>
+					<td>#</td>
+					<td>
+						<span>Problem Name </span>
+						<a data-sort-by="character" class="no-select icon glyphicon glyphicon-sort"></a>
+					</td>
+					<td>Tags</td>
+					<td>
+						<span>Solved Count </span>
+						<a data-sort-by="solved-count" class="no-select icon glyphicon glyphicon-sort"></a>
+					</td>
+				</tr>
+				<tr data-search-entry="0">
+					<td data-col="contest-id"><a target="_blank">123</a></td>
+					<td data-col="problem-index"><a target="_blank">A</a></td>
+					<td data-col="problem-name"><a target="_blank">Manusia Ganteng</a></td>
+					<td data-col="problem-tags"></td>
+					<td data-col="solved-count">Solved Count</td>
+				</tr>
+			</tbody>
+		</table>
+	</main>
+
+	<script type="text/javascript" src="js/dateFormat.min.js"></script>
+	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<!-- <script type="text/javascript" src="js/jquery.jsonp.min.js"></script> -->
+	<!-- Include all compiled plugins (below), or include individual files as needed -->
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/main.js"></script>
+</body>
+</html>

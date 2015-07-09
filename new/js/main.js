@@ -109,10 +109,11 @@ $(function () {
 		$(el).addClass('tag no-select')
 			.on({
 				click: function (event) {
-					event.stopPropagation();
+					// event.stopPropagation();
 					if(typeof self.onclick == 'function') self.onclick(event);
 				}
 			})
+			// .attr('href', '#')
 			.text(tag);
 
 		this.el = function () {
@@ -288,6 +289,10 @@ $(function () {
 			}
 		};
 
+		tags.toString = function () {
+			return selected.join(';');
+		};
+
 		var available = ["constructive algorithms","greedy","implementation","graphs","brute force","dp","math","bitmasks","strings","binary search","sortings","divide and conquer","games","data structures","string suffix structures","dfs and similar","number theory","dsu","flows","shortest paths","trees","hashing","probabilities","2-sat","geometry","meet-in-the-middle","two pointers","fft","combinatorics","ternary search","matrices","graph matchings","schedules","chinese remainder theorem","expression parsing"];
 		var available_el = document.getElementById('available-tags');
 
@@ -442,6 +447,114 @@ $(function () {
 	$('[data-show-status]').on('click', function (event) {
 		tools.showStatus($(this).attr('data-show-status'));
 		status.update();
+	});
+
+	var search = function () {
+		var search = {};
+
+		var base_url = protocol + '//codeforces.com/api/problemset.problems?tags=';
+
+		var result = [];
+
+		var container = document.getElementById('search-result');
+
+		function zip(a, b) {
+			if(a.length != b.length) throw "Both arrays have different length!";
+
+			var res = [];
+			for(var i = 0, size = a.length; i < size; ++i) {
+				a[i].solvedCount = b[i].solvedCount;
+				res.push(a[i]);
+			}
+			return res;
+		}
+
+		// comparison_function is optional
+		search.display = function (sample_element, comparison_function) {
+			if(typeof comparison_function == 'function') {
+				result.sort(comparison_function);
+			}
+
+			$(container).find('[data-search-entry]').remove();
+			result.forEach(function (entry) {
+				var el = sample_element.cloneNode(true);
+				$(el).find('[data-col="solved-count"]').text(entry.solvedCount);
+
+				var problem_url;
+				if(entry['contestId'] < 100000) {
+					problem_url = 'http://codeforces.com/contest/' + entry.contestId + '/';
+				}
+				else {
+					problem_url = 'http://codeforces.com/gym/' + entry.contestId + '/';
+				}
+
+				$(el).find('[data-col="contest-id"] a')
+					.attr('href', problem_url)
+					.text(entry.contestId);
+
+				problem_url += 'problem/' + entry.index;
+				$(el).find('[data-col="problem-index"] a')
+					.attr('href', problem_url)
+					.text(entry.index);
+
+				$(el).find('[data-col="problem-name"] a')
+					.attr('href', problem_url)
+					.text(entry.name);
+
+				entry.tags.forEach(function (tag) {
+					var t = new Tag(tag);
+					t.onclick = function (event) {
+						tags.add(tag);
+					};
+					t.el().textContent = tag;
+
+					$(el).find('[data-col="problem-tags"]')
+						.append(t.el());
+				});
+
+				$(container).append(el);
+			})
+		}.bind(search, $('[data-search-entry]').detach()[0]);
+
+		search.go = function () {
+			var jsonp = $.ajax({
+				url: base_url + tags.toString(),
+
+				// The name of the callback parameter, as specified by the YQL service
+				jsonp: "jsonp",
+
+				// Tell jQuery we're expecting JSONP
+				dataType: "jsonp",
+
+				timeout: 10000,
+
+				// Work with the response
+				success: function (response) {
+					if(response.status == 'OK') {
+						result = zip(response.result.problems, response.result.problemStatistics);
+						search.display();
+					}
+				}
+			});
+		};
+
+		return search;
+	}();
+
+	$('#search-problem-btn').on('click', function (event) {
+		search.go();
+	})
+
+	$('[data-sort-by="character"]').on('click', function (event) {
+		search.display(function (a, b) {
+			return a.name <= b.name ? -1 : 1;
+		});
+	});
+
+	$('[data-sort-by="solved-count"]').on('click', function (event) {
+		search.display(function (a, b) {
+			return b.solvedCount - a.solvedCount;
+		});
 	});
 
 });
