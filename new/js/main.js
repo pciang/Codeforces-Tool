@@ -129,7 +129,7 @@ $(function () {
 		var tools = {};
 
 		var settings = {
-			key: '_settings'
+			key: '_settings',
 			showRecent: 5,
 			handle: "",
 			showStatus: 5,
