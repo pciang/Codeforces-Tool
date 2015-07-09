@@ -14,49 +14,79 @@ switch(location.protocol) {
 
 $(function () {
 	"use strict";
-	function JSONP(url) {
+
+	// error_callback is optional
+	function JSONP(url, success_callback, error_callback) {
 		var self = this;
 
-		var timeout = 10000; // milliseconds
+		var timeout_ms = 10000;
 		var timeoutId = undefined;
 
-		var interval = 15000; // milliseconds
+		var interval_ms = 15000;
 		var intervalId = undefined;
 
-		var status = 'stopped';
+		var request = null;
 
-		function fetch() {
+		var status = 'stopped';
+		
+		function send() {
 			status = 'waiting';
 
-			var script_el = document.createElement('script');
-			script_el.src = url;
-			document.body.appendChild(script_el);
-			document.body.removeChild(script_el);
+			request = $.ajax({
+				url: url,
+
+				// The name of the callback parameter, as specified by the YQL service
+				jsonp: "jsonp",
+
+				// Tell jQuery we're expecting JSONP
+				dataType: "jsonp",
+
+				timeout: 10000,
+
+				// Work with the response
+				success: function (response) {
+					status = 'success';
+					success_callback(response);
+				},
+
+				error: function (jqXHR, textStatus, errorThrown) {
+					status = 'error';
+
+					if(typeof error_callback == 'function') {
+						error_callback(jqXHR, textStatus, errorThrown);
+					}
+				}
+			});
 
 			timeoutId = setTimeout(function () {
-				status = 'failed';
+				request.abort(); // will not trigger error if succeeded
 				clearTimeout(timeoutId);
 				timeoutId = undefined;
-			}, timeout);
+			}, timeout_ms);
 		}
 
 		this.start = function () {
-			fetch();
-			intervalId = setInterval(fetch, interval);
+			if(status == 'stopped') {
+				send();
+				intervalId = setInterval(send, interval_ms);
+			}
 		};
 
 		this.stop = function () {
-			status = 'stopped';
+			if(request != null) {
+				request.abort();
+				request = null;
 
-			if(intervalId != undefined) {
+				if(timeoutId != undefined) {
+					clearTimeout(timeoutId);
+					timeoutId = undefined;
+				}
+
 				clearInterval(intervalId);
 				intervalId = undefined;
 			}
 
-			if(timeoutId != undefined) {
-				clearTimeout(timeoutId);
-				timeoutId = undefined;
-			}
+			status = 'stopped';
 		};
 
 		this.url = function (new_url) {
@@ -119,7 +149,6 @@ $(function () {
 			if(!isNaN(n)) {
 				settings.showRecent = Math.min(Math.max(5, n | 0), 50);
 				settings.save();
-				recent.update();
 			}
 			return settings.showRecent;
 		};
@@ -128,7 +157,6 @@ $(function () {
 			if(typeof h == 'string' || h instanceof String) {
 				settings.handle = h;
 				settings.save();
-				status.update();
 			}
 			return settings.handle;
 		};
@@ -137,42 +165,8 @@ $(function () {
 			if(!isNaN(n)) {
 				settings.showStatus = Math.min(Math.max(5, n | 0), 50);
 				settings.save();
-				status.update();
 			}
 			return settings.showStatus;
-		};
-
-		$('[data-show-recent]').on('click', function (event) {
-			tools.showRecent($(event.target).attr('data-show-recent'));
-		});
-
-		tools.loadRecent = function (response) {
-			console.log(response);
-
-			if(recent.request().status() == 'waiting' && response.status == 'OK') {
-				recent.clear();
-				response.result.forEach(function (entry) { recent.add(entry); });
-			}
-		};
-
-		var tag_checker = /[- a-zA-Z0-9]/;
-		$('#tag-field')
-			.on('keydown', function (event) {
-				if(event.keyCode != 8 && !tag_checker.test(String.fromCharCode(event.keyCode))) event.preventDefault();
-			})
-			.on('keyup', function (event) {
-				if(event.keyCode == 13) {
-					tags.add(this.value);
-					this.select();
-				}
-			});
-
-		tools.loadStatus = function (response) {
-			if(response.status == 'FAILED') {
-				status.request().stop();
-			} else if(status.request().status() == 'waiting' && response.status == 'OK') {
-				console.log(response);
-			}
 		};
 
 		return tools;
@@ -183,25 +177,32 @@ $(function () {
 
 		var container = document.getElementById('recent-container');
 
-		var base_url = protocol + '//codeforces.com/api/problemset.recentStatus?jsonp=tools.loadRecent&count=';
-
-		var jsonp = new JSONP(base_url + tools.showRecent());
-		jsonp.start();
+		var base_url = protocol + '//codeforces.com/api/problemset.recentStatus?count=';
 
 		var counter = 0;
+
+		var jsonp = new JSONP(base_url + tools.showRecent(), function (response) {
+			if(jsonp.status() == 'success' && response.status == 'OK') {
+				recent.clear();
+				response.result.forEach(function (entry) {
+					recent.add(entry);
+				});
+			}
+		});
+		jsonp.start();
 
 		recent.add = function (sample_element, data) {
 			var el = sample_element.cloneNode(true);
 			$(el).attr('data-recent-entry', counter++);
 			$(el).find('[data-col="submission-id"]').text(data.id);
 			$(el).find('[data-col="verdict"]').text(data.verdict);
-			$(el).find('[data-col="memory-byte"]').text(data.memoryCosumedBytes);
+			$(el).find('[data-col="memory-byte"]').text(data.memoryConsumedBytes);
 			$(el).find('[data-col="time-ms"]').text(data.timeConsumedMillis);
 			$(el).find('[data-col="submission-date"]')
 				.text(DateFormat.format.date(new Date(data.creationTimeSeconds * 1000), 'yyyy-MM-dd HH:mm:ss'));
 
 			var problem_url;
-			if(data['contestId'] < 100000) {
+			if(data.contestId < 100000) {
 				problem_url = 'http://codeforces.com/contest/' + data.contestId + '/';
 			}
 			else {
@@ -249,17 +250,14 @@ $(function () {
 
 		recent.clear = function () {
 			counter = 0;
-			$('#recent-container [data-recent-entry]').remove();
+			$(container).find('[data-recent-entry]')
+				.remove();
 		};
 
 		recent.update = function () {
 			jsonp.stop();
 			jsonp.url(base_url + tools.showRecent());
 			jsonp.start();
-		};
-
-		recent.request = function () {
-			return jsonp;
 		};
 
 		return recent;
@@ -277,7 +275,7 @@ $(function () {
 		};
 
 		tags.add = function (tag) {
-			if(selected.indexOf(tag) == -1) {
+			if(tag != '' && selected.indexOf(tag) == -1) {
 				selected.push(tag);
 
 				var t = new Tag(tag);
@@ -310,27 +308,140 @@ $(function () {
 
 		var container = document.getElementById('status-container');
 
-		var complete_url = protocol + '//codeforces.com/api/user.status?jsonp=tools.loadStatus&handle=&from=1&count=';
+		var complete_url = protocol + '//codeforces.com/api/user.status?handle=&from=1&count=';
 
-		var jsonp = new JSONP(complete_url);
+		var counter = 0;
+
+		var handle_checker = /^[-_a-zA-Z0-9]{3,24}$/;
+
+		var jsonp = new JSONP(complete_url, function (response) {
+			if(response.status == 'FAILED') {
+				tools.handle('');
+				jsonp.stop();
+			} else if(jsonp.status() == 'success' && response.status == 'OK') {
+				status.clear();
+				response.result.forEach(function (entry) {
+					status.add(entry);
+				});
+			}
+		}, function (jqXHR, textStatus, errorThrown) {
+			if(textStatus == 'abort' || textStatus == 'timeout') {
+				tools.handle('');
+				jsonp.stop();
+			}
+		});
 
 		status.update = function () {
 			complete_url = complete_url.replace(/(handle=)[^&]*(&)?/, '$1' + tools.handle() + '$2');
 			complete_url = complete_url.replace(/(count=)[^&]*(&)?/, '$1' + tools.showStatus() + '$2');
+
 			jsonp.stop();
 			jsonp.url(complete_url);
-			if(tools.handle() != "") jsonp.start();
+			if(handle_checker.test(tools.handle())) jsonp.start();
+		};
+		status.update();
+
+		status.clear = function () {
+			counter = 0;
+			$(container).find('[data-status-entry]')
+				.remove();
 		};
 
 		status.add = function (sample_element, data) {
+			var el = sample_element.cloneNode(true);
+			$(el).find('[data-col="submission-id"]').text(data.id);
+			$(el).find('[data-col="submission-date"]')
+				.text(DateFormat.format.date(new Date(data.creationTimeSeconds * 1000), 'yyyy-MM-dd HH:mm:ss'));
+			$(el).find('[data-col="language"]').text(data.programmingLanguage);
+			$(el).find('[data-col="verdict"]').text(data.verdict);
+			$(el).find('[data-col="time-ms"]').text(data.timeConsumedMillis);
+			$(el).find('[data-col="memory-byte"]').text(data.memoryConsumedBytes);
 
+			var problem_url;
+			if(data['contestId'] < 100000) {
+				problem_url = 'http://codeforces.com/contest/' + data.contestId + '/';
+			}
+			else {
+				problem_url = 'http://codeforces.com/gym/' + data.contestId + '/';
+			}
+
+			$(el).find('[data-col="contest-id"] a')
+				.attr('href', problem_url)
+				.text(data.contestId);
+
+			problem_url += 'problem/' + data.problem.index;
+			$(el).find('[data-col="problem-index"] a')
+				.attr('href', problem_url)
+				.text(data.problem.index);
+
+			$(el).find('[data-col="problem-name"] a')
+				.attr('href', problem_url)
+				.text(data.problem.name);
+
+			data.author.members.forEach(function (member) {
+				var a = document.createElement('a');
+				$(a).addClass('handle no-select')
+					.attr({
+						'target': '_blank',
+						'href': 'http://codeforces.com/profile/' + member.handle
+					})
+					.text(member.handle);
+				$(el).find('[data-col="handle"]')
+					.append(a);
+			});
+
+			$(container).append(el);
 		}.bind(status, $('#status-container [data-status-entry]').detach()[0]);
-
-		status.request = function () {
-			return jsonp;
-		};
 
 		return status;
 	}();
+
+	$('[data-show-recent]').on('click', function (event) {
+		tools.showRecent($(this).attr('data-show-recent'));
+		recent.update();
+	});
+
+	var tag_checker = /^[- a-zA-Z0-9]{1,16}$/;
+	$('#tag-field')
+		.on('keyup', function (event) {
+			if(event.keyCode == 13) {
+				if(tag_checker.test(this.value)) {
+					this.select();
+					tags.add(this.value);
+				}
+			}
+		});
+	$('#add-tag-btn')
+		.on('click', function (event) {
+			var t = $('#tag-field').select().val();
+			if(tag_checker.test(t)) {
+				tags.add(t);
+			}
+		});
+
+	var handle_checker = /^[-_a-zA-Z0-9]{3,24}$/;
+	$('#handle-field')
+		.on('keyup', function (event) {
+			if(event.keyCode == 13) {
+				if(handle_checker.test(this.value)) {
+					this.blur();
+					tools.handle(this.value);
+					status.update();
+				}
+			}
+		});
+	$('#handle-submit')
+		.on('click', function (event){
+			var h = $('#handle-field').val();
+			if(handle_checker.test(h)) {
+				tools.handle(h);
+				status.update();
+			}
+		});
+	
+	$('[data-show-status]').on('click', function (event) {
+		tools.showStatus($(this).attr('data-show-status'));
+		status.update();
+	});
 
 });
