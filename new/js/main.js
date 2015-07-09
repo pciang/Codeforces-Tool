@@ -129,14 +129,15 @@ $(function () {
 		var tools = {};
 
 		var settings = {
+			key: '_settings'
 			showRecent: 5,
 			handle: "",
 			showStatus: 5,
 			save: function () {
-				localStorage.setItem('settings', JSON.stringify(this));
+				localStorage.setItem(this.key, JSON.stringify(this));
 			},
 			load: function () {
-				var last = JSON.parse(localStorage.getItem('settings'));
+				var last = JSON.parse(localStorage.getItem(this.key));
 				
 				// no filter
 				if(last != null) {
