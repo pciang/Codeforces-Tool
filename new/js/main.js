@@ -139,9 +139,11 @@ $(function () {
 				var last = JSON.parse(localStorage.getItem('settings'));
 				
 				// no filter
-				this.showRecent = last.showRecent;
-				this.handle = last.handle;
-				this.showStatus = last.showStatus;
+				if(last != null) {
+					this.showRecent = last.showRecent;
+					this.handle = last.handle;
+					this.showStatus = last.showStatus;
+				}
 			}
 		};
 		settings.load();
